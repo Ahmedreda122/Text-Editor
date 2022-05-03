@@ -71,20 +71,43 @@ void append()
 
 	fstream file;
 
-	file.open(filename, ios::app);
+	file.open(filename, ios::app | ios::out);
 
 	if (file.fail())
 	{
-		cout << "This is a new file. I created it for you :)";
+		cout << "This is a new file. I created it for you :)\n";
 	}
 	else
 	{
-		cout << "This File Already Exists";
+		cout << "This File Already Exists.\n";
 	}
 	
 	string text;
+    // string textl;
 
-	cout << "Please Enter a content to add to the chosen file\nPress CTRL+Z when you finish\n>>";
+	cout << "Please Enter a content to add to the chosen file \nPress CTRL+Z when you finish\n>>";
+    // while(true)
+    // {
+    //     getline(cin, text);
+    //     cin.ignore();
+    //     textl += text;
+    //     if (text[text.size() - 1] == EOF)
+    //     {
+    //         break;
+    //     }
+    // }
+    // file << textl;
 
+    while(true)
+    {
+        text += getchar();
+        if (text[text.size() - 1] == EOF)
+        {
+            break;
+        }
+    }
+    cout << text;
+    // has a bug in writing
+    file << text;
 	file.close();
 }
