@@ -97,14 +97,16 @@ void append()
     //     }
     // }
     // file << textl;
+    string buffer;
 
     while(true)
     {
-        text += getchar();
-        if (text[text.size() - 1] == EOF)
+        buffer = getchar();
+        if (buffer[buffer.size() - 1] == EOF)
         {
             break;
         }
+        text += buffer;
     }
     cout << text;
     // has a bug in writing
