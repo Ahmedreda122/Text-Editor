@@ -9,6 +9,11 @@
 using namespace std;
 
 void append();
+void load(fstream &file, vector<string> &text);
+void save(fstream &file, vector<string> &text);
+
+fstream file;
+vector<string> text;
 
 int main()
 {
@@ -103,32 +108,64 @@ void append()
 	file.close();
 }
 
-// fstream load(fstream &file, vector<string> &text)
-// {
-//      string filename;
-    
-// 	    cout << "Please Enter the name of a .txt file: ";
+void load(fstream &file, vector<string> &text)
+{
+    string filename;
 
-//      getline(cin, filename);
-// 	    cin.ignore(0);
+    cout << "Please Enter the name of a .txt file: ";
 
-// 	    filename += ".txt";
+    getline(cin, filename);
+    cin.ignore(0);
 
-// 	    file.open(filename);
+    filename += ".txt";
 
-// 	    if (file.fail())
-// 	    {
-// 		    cout << "This is a new file. I created it for you :)\n";
-// 	    }
-// 	    else
-// 	    {
-// 		    cout << "This File Already Exists.\n";
-//          while(!file.eof())
-//          {
-//              char buff[250];
-//              file.getline(buff, 250, '\n');
-//              text.push_back(buff);
-//          }
-// 	    }
-//      file.close();
-// }
+    file.open(filename);
+
+    if (file.fail())
+    {
+        cout << "This is a new file. I created it for you :)\n";
+    }
+    else
+    {
+        cout << "This File Already Exists.\n";
+        while(!file.eof())
+        {
+            char buff[250];
+            file.getline(buff, 250, '\n');
+            text.push_back(buff);
+        }
+    }
+    file.close();
+}
+
+void save(fstream &file, vector<string> &text)
+{
+    string filename;
+
+    cout << "Please Enter the name of a .txt file that you want to save into: ";
+
+        getline(cin, filename);
+        cin.ignore(0);
+
+        filename += ".txt";
+
+        file.open(filename, ios::out);
+
+        if (file.fail())
+        {
+            cout << "This is a new file.We will save text into it.\n";
+            for (string line: text)
+            {
+                file << line;
+            }
+        }
+        else
+        {
+            cout << "This File Already Exists.We will overwrite it\n";
+            for(string line: text)
+            {
+                file << line;
+            }
+        }
+        file.close();
+}
