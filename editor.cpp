@@ -132,7 +132,7 @@ void load(fstream &file, vector<string> &text)
         {
             char buff[250];
             file.getline(buff, 250, '\n');
-            text.push_back(buff);
+            text.push_back(string(buff));
         }
     }
     file.close();
