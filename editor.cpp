@@ -4,6 +4,7 @@
 #include <regex>
 #include <algorithm>
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -102,35 +103,32 @@ void append()
 	file.close();
 }
 
-// fstream load(fstream &file, fstream &copyFile)
+// fstream load(fstream &file, vector<string> &text)
 // {
-//     string filename;
+//      string filename;
     
-// 	cout << "Please Enter the name of a .txt file: ";
+// 	    cout << "Please Enter the name of a .txt file: ";
 
-// 	getline(cin, filename);
-// 	cin.ignore(0);
+//      getline(cin, filename);
+// 	    cin.ignore(0);
 
-// 	filename += ".txt";
+// 	    filename += ".txt";
 
-// 	file.open(filename);
-//     copyFile.open("target.txt", ios::out);
+// 	    file.open(filename);
 
-// 	if (file.fail())
-// 	{
-// 		cout << "This is a new file. I created it for you :)\n";
-//         // return copyFile;
-// 	}
-// 	else
-// 	{
-// 		cout << "This File Already Exists.\n";
-//         while(!file.eof())
-//         {
-//             char c;
-//             c = file.get();
-//             copyFile.put(c);
-//         }
-// 	}
-//     copyFile.close();
-//     file.close();
+// 	    if (file.fail())
+// 	    {
+// 		    cout << "This is a new file. I created it for you :)\n";
+// 	    }
+// 	    else
+// 	    {
+// 		    cout << "This File Already Exists.\n";
+//          while(!file.eof())
+//          {
+//              char buff[250];
+//              file.getline(buff, 250, '\n');
+//              text.push_back(buff);
+//          }
+// 	    }
+//      file.close();
 // }
