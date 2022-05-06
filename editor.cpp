@@ -83,20 +83,9 @@ void append()
 	}
 	
 	string text;
-    // string textl;
 
 	cout << "Please Enter a content to add to the chosen file \nPress CTRL+Z when you finish\n>>";
-    // while(true)
-    // {
-    //     getline(cin, text);
-    //     cin.ignore();
-    //     textl += text;
-    //     if (text[text.size() - 1] == EOF)
-    //     {
-    //         break;
-    //     }
-    // }
-    // file << textl;
+
     string buffer;
 
     while(true)
@@ -109,7 +98,39 @@ void append()
         text += buffer;
     }
     cout << text;
-    // has a bug in writing
     file << text;
 	file.close();
 }
+
+// fstream load(fstream &file, fstream &copyFile)
+// {
+//     string filename;
+    
+// 	cout << "Please Enter the name of a .txt file: ";
+
+// 	getline(cin, filename);
+// 	cin.ignore(0);
+
+// 	filename += ".txt";
+
+// 	file.open(filename);
+//     copyFile.open("target.txt", ios::out);
+
+// 	if (file.fail())
+// 	{
+// 		cout << "This is a new file. I created it for you :)\n";
+//         // return copyFile;
+// 	}
+// 	else
+// 	{
+// 		cout << "This File Already Exists.\n";
+//         while(!file.eof())
+//         {
+//             char c;
+//             c = file.get();
+//             copyFile.put(c);
+//         }
+// 	}
+//     copyFile.close();
+//     file.close();
+// }
