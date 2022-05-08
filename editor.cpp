@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <string>
 #include <vector>
+#include <cctype>
 
 using namespace std;
 
@@ -15,6 +16,9 @@ void load(fstream &file, vector<string> &text);
 void save(fstream &file, vector<string> &text);
 void encrypt();
 void decrypt();
+void upper();
+void lower();
+void capitalize();
 
 fstream file;
 vector<string> text;
@@ -23,9 +27,11 @@ int main()
 {
 	string function;
 
+    load(file, text);
+
     while (true)
     {
-        cout << "Please, Choose a function to perform it:\n1- Appending\n2- Display content\n3- Empty the file.\n4- Encrypt the content of the file.\n5- decrypt the content of the file.\n15- Save\n16- Exit\n>>";
+        cout << "Please, Choose a function to perform it:\n1- Appending\n2- Display content\n3- Empty the file.\n4- Encrypt the content of the file.\n5- decrypt the content of the file.\n12- Turn the file content to upper case.\n13- Turn the file content to lower case.\n14- Turn file content to 1st caps\n15- Save\n16- Exit\n>>";
         // Getting the input from the user
         getline(cin, function);
         // Removing the spaces from the input string to the end of it, then returning a pointer to the beginning of the removed spaces then Erasing the content from if_remove returning pointer to the end of the string
@@ -33,15 +39,11 @@ int main()
         cin.ignore(0);
         if (function == "1")
         {
-            load(file, text);
             append();
-            return 0;
         }
         else if (function == "2")
         {
-            load(file, text);
             display();
-            return 0;
         }
         else if (function == "3")
         {
@@ -49,15 +51,11 @@ int main()
         }
         else if (function == "4")
         {
-            load(file, text);
             encrypt();
-            return 0;
         }
         else if (function == "5")
         {
-            load(file, text);
             decrypt();
-            return 0;
 
         }
         else if (function == "6")
@@ -84,6 +82,18 @@ int main()
         {
 
         }
+        else if (function == "12")
+        {
+            upper();
+        }
+        else if (function == "13")
+        {
+            lower();
+        }
+        else if (function == "14")
+        {
+            capitalize();
+        }        
         else if (function == "15")
         {
             save(file, text);
@@ -144,7 +154,7 @@ void save(fstream &file, vector<string> &text)
             cout << "This is a new file.We will save text into it.\n";
             for (string line: text)
             {
-                file << line;
+                file << line << '\n';
             }
         }
         else
@@ -152,7 +162,7 @@ void save(fstream &file, vector<string> &text)
             cout << "This File Already Exists.We will overwrite it\n";
             for(string line: text)
             {
-                file << line;
+                file << line << '\n';
             }
         }
         file.close();
@@ -162,16 +172,24 @@ void append()
 {  	
 	cout << "Please, Enter a content to add to the chosen file \nPress CTRL+Z without any content before it when you finish\n>>";
 
-    string buffer;
-    text.push_back("\n");
+    string new_line;
     while(true)
     {
-        buffer = getchar();
-        if (buffer[buffer.size() - 1] == EOF)
+        new_line += getchar();
+        if (new_line[new_line.size() - 1] == EOF)
         {
             break;
         }
-        text.push_back(buffer);
+        // IF you input a newline char (Pressed enter)
+        else if (new_line[new_line.size() - 1] == '\n')
+        {
+            // Delete the newline char from end of the new_line string
+            new_line.pop_back();
+            // Add this "line" to the text vector
+            text.push_back(new_line);
+            // Empty the new_line string to input another line to it.
+            new_line = "";
+        }  
     }
 
 }
@@ -235,4 +253,32 @@ void decrypt()
 			text[i][j] = (char) ( (int) text[i][j] - 1);
 		}
 	} 
-}	
+}
+
+void upper()
+{
+    for (int i = 0; i < text.size(); ++i)
+    {
+        // Transforming the whole string to uppercase.
+        transform(text[i].begin(), text[i].end(), text[i].begin(), ::toupper);
+    }
+    
+}
+
+void lower()
+{
+    for (int i = 0; i < text.size(); ++i)
+    {
+        // Transforming the whole string to lowercase.
+        transform(text[i].begin(), text[i].end(), text[i].begin(), ::tolower);
+    }
+    
+}
+
+void capitalize()
+{
+    for (int i = 0; i < text.size(); ++i)
+    {
+        text[i][0] = toupper(text[i][0]); 
+    }
+}
