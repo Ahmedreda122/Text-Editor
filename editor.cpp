@@ -27,7 +27,9 @@ int main()
 	cin.ignore(0);
     if (function == "1")
     {
+        load(file, text);
 		append();
+        save(file, text);
         return 0;
     }
     else if (function == "2")
@@ -66,34 +68,10 @@ int main()
 
 void append()
 {  	
-	string filename;
-
-	cout << "Please Enter the name of a .txt file: ";
-
-	getline(cin, filename);
-	cin.ignore(0);
-
-	filename += ".txt";
-
-	fstream file;
-
-	file.open(filename, ios::app | ios::out);
-
-	if (file.fail())
-	{
-		cout << "This is a new file. I created it for you :)\n";
-	}
-	else
-	{
-		cout << "This File Already Exists.\n";
-	}
-	
-	string text;
-
-	cout << "Please Enter a content to add to the chosen file \nPress CTRL+Z when you finish\n>>";
+	cout << "Please, Enter a content to add to the chosen file \nPress CTRL+Z without any content before it when you finish\n>>";
 
     string buffer;
-
+    text.push_back("\n");
     while(true)
     {
         buffer = getchar();
@@ -101,11 +79,9 @@ void append()
         {
             break;
         }
-        text += buffer;
+        text.push_back(buffer);
     }
-    cout << text;
-    file << text;
-	file.close();
+
 }
 
 void load(fstream &file, vector<string> &text)
@@ -130,8 +106,8 @@ void load(fstream &file, vector<string> &text)
         cout << "This File Already Exists.\n";
         while(!file.eof())
         {
-            char buff[250];
-            file.getline(buff, 250, '\n');
+            char buff[500];
+            file.getline(buff, 500, '\n');
             text.push_back(string(buff));
         }
     }
