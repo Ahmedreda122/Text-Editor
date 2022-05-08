@@ -8,6 +8,7 @@
 
 using namespace std;
 
+void display();
 void append();
 void load(fstream &file, vector<string> &text);
 void save(fstream &file, vector<string> &text);
@@ -19,7 +20,7 @@ int main()
 {
 	string function;
 
-    cout << "Please, Choose a function to perform it:\n1- Appending:\n>>";
+    cout << "Please, Choose a function to perform it:\n1- Appending\n2- Display content\n>>";
 	// Getting the input from the user
 	getline(cin, function);
 	// Removing the spaces from the input string to the end of it, then returning a pointer to the beginning of the removed spaces then Erasing the content from if_remove returning pointer to the end of the string
@@ -34,7 +35,9 @@ int main()
     }
     else if (function == "2")
     {
-
+        load(file, text);
+		display();
+        return 0;
     }
     else if (function == "3")
     {
@@ -64,24 +67,6 @@ int main()
     {
 
     }
-}
-
-void append()
-{  	
-	cout << "Please, Enter a content to add to the chosen file \nPress CTRL+Z without any content before it when you finish\n>>";
-
-    string buffer;
-    text.push_back("\n");
-    while(true)
-    {
-        buffer = getchar();
-        if (buffer[buffer.size() - 1] == EOF)
-        {
-            break;
-        }
-        text.push_back(buffer);
-    }
-
 }
 
 void load(fstream &file, vector<string> &text)
@@ -144,4 +129,40 @@ void save(fstream &file, vector<string> &text)
             }
         }
         file.close();
+}
+
+void append()
+{  	
+	cout << "Please, Enter a content to add to the chosen file \nPress CTRL+Z without any content before it when you finish\n>>";
+
+    string buffer;
+    text.push_back("\n");
+    while(true)
+    {
+        buffer = getchar();
+        if (buffer[buffer.size() - 1] == EOF)
+        {
+            break;
+        }
+        text.push_back(buffer);
+    }
+
+}
+
+void display()
+{
+	if (text.empty())
+	{
+		cout << "There is no content in this file to display.\n";
+	}
+	else
+	{
+		cout << "______________________________________\n\n";
+		for(string line: text)
+		{
+			cout << line << '\n';
+		}
+		cout << "_____________________________________\n";
+	}
+
 }
