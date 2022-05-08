@@ -8,10 +8,13 @@
 
 using namespace std;
 
+void empty();
 void display();
 void append();
 void load(fstream &file, vector<string> &text);
 void save(fstream &file, vector<string> &text);
+void encrypt();
+void decrypt();
 
 fstream file;
 vector<string> text;
@@ -20,53 +23,77 @@ int main()
 {
 	string function;
 
-    cout << "Please, Choose a function to perform it:\n1- Appending\n2- Display content\n>>";
-	// Getting the input from the user
-	getline(cin, function);
-	// Removing the spaces from the input string to the end of it, then returning a pointer to the beginning of the removed spaces then Erasing the content from if_remove returning pointer to the end of the string
-	function.erase(remove_if(function.begin(), function.end(), ::isspace), function.end());
-	cin.ignore(0);
-    if (function == "1")
+    while (true)
     {
-        load(file, text);
-		append();
-        save(file, text);
-        return 0;
-    }
-    else if (function == "2")
-    {
-        load(file, text);
-		display();
-        return 0;
-    }
-    else if (function == "3")
-    {
+        cout << "Please, Choose a function to perform it:\n1- Appending\n2- Display content\n3- Empty the file.\n4- Encrypt the content of the file.\n5- decrypt the content of the file.\n15- Save\n16- Exit\n>>";
+        // Getting the input from the user
+        getline(cin, function);
+        // Removing the spaces from the input string to the end of it, then returning a pointer to the beginning of the removed spaces then Erasing the content from if_remove returning pointer to the end of the string
+        function.erase(remove_if(function.begin(), function.end(), ::isspace), function.end());
+        cin.ignore(0);
+        if (function == "1")
+        {
+            load(file, text);
+            append();
+            return 0;
+        }
+        else if (function == "2")
+        {
+            load(file, text);
+            display();
+            return 0;
+        }
+        else if (function == "3")
+        {
+            empty();
+        }
+        else if (function == "4")
+        {
+            load(file, text);
+            encrypt();
+            return 0;
+        }
+        else if (function == "5")
+        {
+            load(file, text);
+            decrypt();
+            return 0;
 
-    }
-    else if (function == "4")
-    {
+        }
+        else if (function == "6")
+        {
 
-    }
-    else if (function == "5")
-    {
- 
-    }
-    else if (function == "6")
-    {
+        }
+        else if (function == "7")
+        {
 
-    }
-    else if (function == "7")
-    {
+        }
+        else if (function == "8")
+        {
 
-    }
-    else if (function == "8")
-    {
+        }
+        else if (function == "9")
+        {
 
-    }
-    else if (function == "9")
-    {
+        }
+        else if (function == "10")
+        {
 
+        }
+        else if (function == "11")
+        {
+
+        }
+        else if (function == "15")
+        {
+            save(file, text);
+        }
+        else if (function == "16")
+        {
+            return 1;
+        }
     }
+
 }
 
 void load(fstream &file, vector<string> &text)
@@ -164,5 +191,48 @@ void display()
 		}
 		cout << "_____________________________________\n";
 	}
-
 }
+
+void empty()
+{
+	char agree;
+	
+	string filename;
+
+    cout << "Please Enter the name of a .txt file: ";
+
+    getline(cin, filename);
+    cin.ignore(0);
+
+    filename += ".txt";
+
+	cout << "Are you sure that you want to delete content of " << filename << "?\nPress Enter if you agree, Press anything else otherwise\n>>";
+	agree = getchar();
+	if (agree == '\n')
+	{	
+		file.open(filename, ios::out | ios::trunc);
+		file.close();
+	}
+} 
+
+void encrypt()
+{
+	for (int i = 0; i < text.size(); ++i)
+	{
+		for(int j = 0; j < text[i].size(); ++j)
+		{
+			text[i][j] = (char) ( (int) text[i][j] + 1);
+		}
+	} 
+}
+
+void decrypt()
+{
+	for (int i = 0; i < text.size(); ++i)
+	{
+		for(int j = 0; j < text[i].size(); ++j)
+		{
+			text[i][j] = (char) ( (int) text[i][j] - 1);
+		}
+	} 
+}	
