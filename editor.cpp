@@ -117,7 +117,7 @@ void load(fstream &file, vector<string> &text)
 
     filename += ".txt";
 
-    file.open(filename);
+    file.open(filename, ios::in);
 
     if (file.fail())
     {
@@ -142,30 +142,30 @@ void save(fstream &file, vector<string> &text)
 
     cout << "Please Enter the name of a .txt file that you want to save into: ";
 
-        getline(cin, filename);
-        cin.ignore(0);
+    getline(cin, filename);
+    cin.ignore(0);
 
-        filename += ".txt";
+    filename += ".txt";
 
-        file.open(filename, ios::out);
+    file.open(filename, ios::out);
 
-        if (file.fail())
+    if (file.fail())
+    {
+        cout << "This is a new file.We will save text into it.\n";
+        for (string line: text)
         {
-            cout << "This is a new file.We will save text into it.\n";
-            for (string line: text)
-            {
-                file << line << '\n';
-            }
+            file << line << '\n';
         }
-        else
+    }
+    else
+    {
+        cout << "This File Already Exists.We will overwrite it\n";
+        for(string line: text)
         {
-            cout << "This File Already Exists.We will overwrite it\n";
-            for(string line: text)
-            {
-                file << line << '\n';
-            }
+            file << line << '\n';
         }
-        file.close();
+    }
+    file.close();
 }
 
 void append()
@@ -176,8 +176,12 @@ void append()
     while(true)
     {
         new_line += getchar();
-        if (new_line[new_line.size() - 1] == EOF)
+        if (new_line[new_line.size() - 1] == (char) 26)
         {
+            // Delete the EOF char from end of the new_line string
+            new_line.pop_back();
+            // Add this "line" to the text vector
+            text.push_back(new_line);
             break;
         }
         // IF you input a newline char (Pressed enter)
