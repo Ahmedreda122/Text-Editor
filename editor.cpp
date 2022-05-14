@@ -9,19 +9,21 @@
 
 using namespace std;
 
+fstream file;
+vector<string> text;
+vector<string> mergedText;
+
 void empty();
 void display();
 void append();
 void load(fstream &file, vector<string> &text);
-void save(fstream &file, vector<string> &text);
+void save(fstream &file, vector<string> &text, vector<string> mergedText);
 void encrypt();
 void decrypt();
 void upper();
 void lower();
 void capitalize();
 
-fstream file;
-vector<string> text;
 
 int main()
 {
@@ -31,7 +33,7 @@ int main()
 
     while (true)
     {
-        cout << "Please, Choose a function to perform it:\n1- Appending\n2- Display content\n3- Empty the file.\n4- Encrypt the content of the file.\n5- decrypt the content of the file.\n12- Turn the file content to upper case.\n13- Turn the file content to lower case.\n14- Turn file content to 1st caps\n15- Save\n16- Exit\n>>";
+        cout << "Please, Choose a function to perform it:\n1- Appending\n2- Display content\n3- Empty the file.\n4- Encrypt the content of the file.\n5- decrypt the content of the file.\n6- Merge another file\n12- Turn the file content to upper case.\n13- Turn the file content to lower case.\n14- Turn file content to 1st caps\n15- Save\n16- Exit\n>>";
         // Getting the input from the user
         getline(cin, function);
         // Removing the spaces from the input string to the end of it, then returning a pointer to the beginning of the removed spaces then Erasing the content from if_remove returning pointer to the end of the string
@@ -56,11 +58,10 @@ int main()
         else if (function == "5")
         {
             decrypt();
-
         }
         else if (function == "6")
         {
-
+            load(file, mergedText);
         }
         else if (function == "7")
         {
@@ -96,7 +97,7 @@ int main()
         }        
         else if (function == "15")
         {
-            save(file, text);
+            save(file, text, mergedText);
         }
         else if (function == "16")
         {
@@ -136,7 +137,7 @@ void load(fstream &file, vector<string> &text)
     file.close();
 }
 
-void save(fstream &file, vector<string> &text)
+void save(fstream &file, vector<string> &text, vector<string> mergedText)
 {
     string filename;
 
@@ -159,10 +160,17 @@ void save(fstream &file, vector<string> &text)
     }
     else
     {
-        cout << "This File Already Exists.We will overwrite it\n";
+        cout << "This File Already Exists. We will overwrite it\n";
         for(string line: text)
         {
             file << line << '\n';
+        }
+        if(!mergedText.empty())
+        {
+            for(string line: mergedText)
+            {
+                file << line << '\n';
+            }
         }
     }
     file.close();
