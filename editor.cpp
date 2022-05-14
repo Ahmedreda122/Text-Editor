@@ -170,6 +170,7 @@ void save(fstream &file, vector<string> &text, vector<string> mergedText)
             for(string line: mergedText)
             {
                 file << line << '\n';
+                text.push_back(line);
             }
         }
     }
