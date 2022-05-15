@@ -6,34 +6,44 @@
 #include <string>
 #include <vector>
 #include <cctype>
+#include <map>
 
 using namespace std;
+
+typedef map<string, int> StrIntMap;
 
 fstream file;
 vector<string> text;
 vector<string> mergedText;
+string filename;
 
 void empty();
 void display();
 void append();
-void load(fstream &file, vector<string> &text);
+void load(fstream &file, vector<string> &text, string& filename);
 void save(fstream &file, vector<string> &text, vector<string> mergedText);
 void encrypt();
 void decrypt();
 void upper();
 void lower();
 void capitalize();
+void search();
+void count();
+void countWords(istream& in ,StrIntMap& words);
+void nWords(string filename = filename);
+void nCharacters(string filename = filename);
+void nLines(string filename = filename);
 
 
 int main()
 {
 	string function;
 
-    load(file, text);
+    load(file, text, filename);
 
     while (true)
     {
-        cout << "Please, Choose a function to perform it:\n1- Appending\n2- Display content\n3- Empty the file.\n4- Encrypt the content of the file.\n5- decrypt the content of the file.\n6- Merge another file\n12- Turn the file content to upper case.\n13- Turn the file content to lower case.\n14- Turn file content to 1st caps\n15- Save\n16- Exit\n>>";
+        cout << "\nPlease, Choose a function to perform it:\n1-  Appending\n2-  Display content\n3-  Empty the file.\n4-  Encrypt the content of the file.\n5-  Decrypt the content of the file.\n6-  Merge another file\n7-  Count the number of words\n8-  Count the number of characters\n9-  Count the number of lines\n10- Search for the word\n11- Count the number of times a word exist\n12- Turn the file content to upper case.\n13- Turn the file content to lower case.\n14- Turn file content to 1st caps\n15- Save\n16- Exit\n>>";
         // Getting the input from the user
         getline(cin, function);
         // Removing the spaces from the input string to the end of it, then returning a pointer to the beginning of the removed spaces then Erasing the content from if_remove returning pointer to the end of the string
@@ -61,27 +71,27 @@ int main()
         }
         else if (function == "6")
         {
-            load(file, mergedText);
+            load(file, mergedText, filename);
         }
         else if (function == "7")
         {
-
+            nWords();
         }
         else if (function == "8")
         {
-
+            nCharacters();
         }
         else if (function == "9")
         {
-
+            nLines();
         }
         else if (function == "10")
         {
-
+            search();
         }
         else if (function == "11")
         {
-
+            count();
         }
         else if (function == "12")
         {
@@ -107,9 +117,8 @@ int main()
 
 }
 
-void load(fstream &file, vector<string> &text)
+void load(fstream &file, vector<string> &text, string& filename)
 {
-    string filename;
 
     cout << "Please Enter the name of a .txt file: ";
 
@@ -122,11 +131,11 @@ void load(fstream &file, vector<string> &text)
 
     if (file.fail())
     {
-        cout << "This is a new file. I created it for you :)\n";
+        cout << "\nThis is a new file. I created it for you :)\n";
     }
     else
     {
-        cout << "This File Already Exists.\n";
+        cout << "\nThis File Already Exists.\n";
         while(!file.eof())
         {
             char buff[500];
@@ -152,7 +161,7 @@ void save(fstream &file, vector<string> &text, vector<string> mergedText)
 
     if (file.fail())
     {
-        cout << "This is a new file.We will save text into it.\n";
+        cout << "\nThis is a new file.We will save text into it.\n";
         for (string line: text)
         {
             file << line << '\n';
@@ -160,7 +169,7 @@ void save(fstream &file, vector<string> &text, vector<string> mergedText)
     }
     else
     {
-        cout << "This File Already Exists. We will overwrite it\n";
+        cout << "\nThis File Already Exists. We will overwrite it\n";
         for(string line: text)
         {
             file << line << '\n';
@@ -179,7 +188,7 @@ void save(fstream &file, vector<string> &text, vector<string> mergedText)
 
 void append()
 {  	
-	cout << "Please, Enter a content to add to the chosen file \nPress CTRL+Z without any content before it when you finish\n>>";
+	cout << "\nPlease, Enter a content to add to the chosen file \nPress CTRL+Z without any content before it when you finish\n>>";
 
     string new_line;
     while(true)
@@ -294,4 +303,125 @@ void capitalize()
     {
         text[i][0] = toupper(text[i][0]); 
     }
+}
+
+void search()
+{
+    string search;
+    int offset;
+    string line;
+
+    ifstream Myfile;
+    Myfile.open(filename);
+    cout << "Type the name you want to search : " << endl;
+    
+    getline(cin, search);
+    cin.ignore(0);
+    
+    if (Myfile.is_open())
+    {
+        while (!Myfile.eof())
+        {
+            getline(Myfile, line);
+            if ((offset = line.find(search,0)) != string :: npos)
+            {
+                cout << "\nThe word "<< search << " has been founded!" << endl;
+                Myfile.close();
+                return;
+            }  
+        }
+        cout << "\nThis word does not Exist.";
+        Myfile.close();
+    }    
+    else
+    {
+        cout << "\nCould not open file"<<endl;
+        return;
+    }   
+}
+
+void count()
+{
+    ifstream in("data.txt");
+    StrIntMap words_map;
+    countWords(in, words_map);
+
+    for(StrIntMap::iterator it = words_map.begin();it != words_map.end(); ++it)
+    {
+        cout << it->first << " occured "<< it->second << endl;
+    }
+}
+
+void countWords(istream& in ,StrIntMap& words)
+{
+    string text;
+    while(in >> text)
+    {
+        ++words[text];
+    }
+}
+
+
+void nWords(string filename)
+{
+    ifstream indata;
+    char ch;
+    int words = 0;
+
+    indata.open(filename);
+    indata.get(ch);
+    while(indata)
+    {
+        if (ch == '\n')
+        {
+            words++;
+        }
+        else if (ch == ' ')
+            words++;
+
+        indata.get(ch);
+    }
+
+
+    cout<<"\nNumber of Words: " << words << endl;
+    return;
+}
+
+void nCharacters(string filename)
+{
+    ifstream indata;
+    char ch;
+    int chr = 0;
+
+    indata.open(filename);
+    indata.get(ch);
+    while(indata)
+    { 
+        chr++;
+        indata.get(ch);
+    }
+
+    cout<<"\nNumber of Characters: " << chr  << endl;
+    return;
+}
+
+void nLines(string filename)
+{
+    ifstream indata;
+    char ch;
+    int lines = 0;
+
+    indata.open(filename);
+    indata.get(ch);
+    while(indata)
+    {
+        if (ch == '\n')
+        {
+          lines++;
+        }
+        indata.get(ch);
+    }
+
+    cout<<"\nNumber of Lines: " << lines << endl;
+    return;
 }
