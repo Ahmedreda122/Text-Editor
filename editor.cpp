@@ -20,7 +20,7 @@ string filename;
 void empty();
 void display();
 void append();
-void load(fstream &file, vector<string> &text, string& filename);
+string load(fstream &file, vector<string> &text);
 void save(fstream &file, vector<string> &text, vector<string> mergedText);
 void encrypt();
 void decrypt();
@@ -30,16 +30,16 @@ void capitalize();
 void search();
 void count();
 void countWords(istream& in ,StrIntMap& words);
-void nWords(string filename = filename);
-void nCharacters(string filename = filename);
-void nLines(string filename = filename);
+void nWords();
+void nCharacters();
+void nLines();
 
 
 int main()
 {
 	string function;
 
-    load(file, text, filename);
+    filename = load(file, text);
 
     while (true)
     {
@@ -71,7 +71,7 @@ int main()
         }
         else if (function == "6")
         {
-            load(file, mergedText, filename);
+            load(file, mergedText);
         }
         else if (function == "7")
         {
@@ -117,8 +117,9 @@ int main()
 
 }
 
-void load(fstream &file, vector<string> &text, string& filename)
+string load(fstream &file, vector<string> &text)
 {
+    string filename;
 
     cout << "Please Enter the name of a .txt file: ";
 
@@ -144,6 +145,7 @@ void load(fstream &file, vector<string> &text, string& filename)
         }
     }
     file.close();
+    return filename;
 }
 
 void save(fstream &file, vector<string> &text, vector<string> mergedText)
@@ -342,7 +344,7 @@ void search()
 
 void count()
 {
-    ifstream in("data.txt");
+    ifstream in(filename);
     StrIntMap words_map;
     countWords(in, words_map);
 
@@ -362,7 +364,7 @@ void countWords(istream& in ,StrIntMap& words)
 }
 
 
-void nWords(string filename)
+void nWords()
 {
     ifstream indata;
     char ch;
@@ -387,7 +389,7 @@ void nWords(string filename)
     return;
 }
 
-void nCharacters(string filename)
+void nCharacters()
 {
     ifstream indata;
     char ch;
@@ -405,7 +407,7 @@ void nCharacters(string filename)
     return;
 }
 
-void nLines(string filename)
+void nLines()
 {
     ifstream indata;
     char ch;
