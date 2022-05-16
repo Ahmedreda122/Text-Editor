@@ -1,15 +1,17 @@
 /* 
-Program   : editor.cpp
-Purpose   : Devoloping the act of
-            importing a file andchosing an 
-            option to be done for it 
-            counting , merge , searching , etc
-Author    : Mohammad El-Ramly
-Developers: Ahmed Reda Bayomi       ID: 20210019
-            Youssef Hamed Mohamed   ID: 20210494
- Date     : 16 MAY 2022
- Version  : 1.0 
+    Program   : editor.cpp
+    Purpose   : Devoloping the act of
+                importing a file and Choosing an 
+                option to be done for it 
+                Counting , Merge , Searching , etc
+
+    Authors   : Ahmed Reda Bayomi       ID: 20210019
+                Youssef Hamed Mohamed   ID: 20210494
+
+    Date      : 16 MAY 2022
+    Version   : 1.0 
  */
+
 #include <iostream>
 #include <fstream>
 #include <cstring>
@@ -359,21 +361,21 @@ void capitalize()
                If (a space or a comma or a dot or a semicolon or colon or score or question mark) was followed by the current character, 
                Capitalize it(turn it to uppercase)
             */
-            if (text[i][j-1] == ' ' || text[i][j-1] == ',' || text[i][j-1] == '.' || text[i][j-1] == ';' || text[i][j-1] == ':' || text[i][j-1] == '-'|| text[i][j-1] == '?')
+            if (text[i][j-1] == ' ' || text[i][j-1] == ',' || text[i][j-1] == '.' || text[i][j-1] == ';' || text[i][j-1] == ':' || text[i][j-1] == '-' || text[i][j-1] == '?')
             {
                 text[i][j] = toupper(text[i][j]);
             }
         }
     }
 }
- //searching for any word
-void search()
 
+// Searching for any word
+void search()
 {
     string search;
     int offset;
     string line;
-//geting the word from the user
+    //geting the word from the user
     ifstream Myfile;
     Myfile.open(filename);//open file
     cout << "Type the name you want to search : " << endl;
