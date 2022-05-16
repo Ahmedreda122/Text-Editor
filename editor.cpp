@@ -220,7 +220,7 @@ void append()
         // Get a character Then add it in new_line string
         new_line += getchar();
         // If the last character in the new_line was EOF or CTRL+Z (Pressed Ctrl+Z then Enter)
-        if (new_line[new_line.size() - 1] == (char) 26)
+        if (new_line[new_line.size() - 1] == (char) 26 || new_line[new_line.size() - 1] == EOF)
         {
             // Delete the EOF char from end of the new_line string
             new_line.pop_back();
@@ -343,8 +343,11 @@ void capitalize()
         // Looping over the rest of characters in the line  
         for (int j = 1; j < text[i].size(); ++j)
         {
-            // If a space was followed by the current character, Capitalize it(turn it to uppercase)
-            if (text[i][j-1] == ' ')
+            /*
+               If (a space or a comma or a dot or a semicolon or colon or score) was followed by the current character, 
+               Capitalize it(turn it to uppercase)
+            */
+            if (text[i][j-1] == ' ' || text[i][j-1] == ',' || text[i][j-1] == '.' || text[i][j-1] == ';' || text[i][j-1] == ':' || text[i][j-1] == '-'|| text[i][j-1] == '?')
             {
                 text[i][j] = toupper(text[i][j]);
             }
