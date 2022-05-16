@@ -341,7 +341,7 @@ void capitalize()
         // Taking the first char of every line and uppercase it
         text[i][0] = toupper(text[i][0]);
         // Looping over the rest of characters in the line  
-        for (int j = 1; j < text[j].size; ++j)
+        for (int j = 1; j < text[i].size; ++j)
         {
             // If a space was followed by the current character, Capitalize it(turn it to uppercase)
             if (text[i][j-1] == ' ')
