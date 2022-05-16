@@ -344,7 +344,7 @@ void capitalize()
         for (int j = 1; j < text[i].size(); ++j)
         {
             /*
-               If (a space or a comma or a dot or a semicolon or colon or score) was followed by the current character, 
+               If (a space or a comma or a dot or a semicolon or colon or score or question mark) was followed by the current character, 
                Capitalize it(turn it to uppercase)
             */
             if (text[i][j-1] == ' ' || text[i][j-1] == ',' || text[i][j-1] == '.' || text[i][j-1] == ';' || text[i][j-1] == ':' || text[i][j-1] == '-'|| text[i][j-1] == '?')
