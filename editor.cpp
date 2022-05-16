@@ -39,10 +39,12 @@ int main()
 {
 	string function;
 
+    // Storing filename in a variable to open it again once we need that
     filename = load(file, text);
 
     while (true)
     {
+        // Displaying Menu
         cout << "\nPlease, Choose a function to perform it:\n1-  Appending\n2-  Display content\n3-  Empty the file.\n4-  Encrypt the content of the file.\n5-  Decrypt the content of the file.\n6-  Merge another file\n7-  Count the number of words\n8-  Count the number of characters\n9-  Count the number of lines\n10- Search for the word\n11- Count the number of times a word exist\n12- Turn the file content to upper case.\n13- Turn the file content to lower case.\n14- Turn file content to 1st caps\n15- Save\n16- Exit\n>>";
         // Getting the input from the user
         getline(cin, function);
@@ -128,8 +130,10 @@ string load(fstream &file, vector<string> &text)
 
     filename += ".txt";
 
+    // Opening file in reading mode
     file.open(filename, ios::in);
 
+    // If file cannot be found or opened
     if (file.fail())
     {
         cout << "\nThis is a new file. I created it for you :)\n";
@@ -137,14 +141,20 @@ string load(fstream &file, vector<string> &text)
     else
     {
         cout << "\nThis File Already Exists.\n";
+        // While the reading cursor does not reach the end of the file
         while(!file.eof())
         {
+            // creating a Buffer
             char buff[500];
+            // Storing the line from the file to the buffer
             file.getline(buff, 500, '\n');
+            // Adding that buffer to a vector
             text.push_back(string(buff));
         }
     }
+    // Closes the file
     file.close();
+    // Returning the name of the file
     return filename;
 }
 
@@ -153,36 +163,48 @@ void save(fstream &file, vector<string> &text, vector<string> mergedText)
     string filename;
 
     cout << "Please Enter the name of a .txt file that you want to save into: ";
-
+    
     getline(cin, filename);
     cin.ignore(0);
 
     filename += ".txt";
 
+    // Opening file in write mode
     file.open(filename, ios::out);
 
+    // If file cannot be found or opened
     if (file.fail())
     {
-        cout << "\nThis is a new file.We will save text into it.\n";
-        for (string line: text)
-        {
-            file << line << '\n';
-        }
+        // Print this
+        cout << "\nThis is a new file. We will save text into it.\n";
     }
     else
     {
+        // Otherwise, print this
         cout << "\nThis File Already Exists. We will overwrite it\n";
-        for(string line: text)
+    }
+
+    // For every line(element) in text vector
+    for(string line: text)
+    {
+        // Write the line in the file 
+        file << line << '\n';
+    }
+    // If we load a content from a file to be merged to this file, then write(add) it too
+    if(!mergedText.empty())
+    {
+        // For every line(element) in text vector
+        for(string line: mergedText)
         {
+            // Write the line in the file 
             file << line << '\n';
-        }
-        if(!mergedText.empty())
-        {
-            for(string line: mergedText)
-            {
-                file << line << '\n';
-                text.push_back(line);
-            }
+            /* 
+                Add the content of the mergedText vector 
+                To "text" vector to edit on them both if user choose another option after this
+                In other words merge the two vectors into the first ("text" vector)
+                And perform any possible incoming changes to it. 
+            */
+            text.push_back(line);
         }
     }
     file.close();
@@ -190,18 +212,21 @@ void save(fstream &file, vector<string> &text, vector<string> mergedText)
 
 void append()
 {  	
-	cout << "\nPlease, Enter a content to add to the chosen file \nPress CTRL+Z without any content before it when you finish\n>>";
+	cout << "\nPlease, Enter a content to add to the chosen file \nPress CTRL+Z without any content before it then hit Enter, Once you finish\n>>";
 
     string new_line;
     while(true)
     {
+        // Get a character Then add it in new_line string
         new_line += getchar();
+        // If the last character in the new_line was EOF or CTRL+Z (Pressed Ctrl+Z then Enter)
         if (new_line[new_line.size() - 1] == (char) 26)
         {
             // Delete the EOF char from end of the new_line string
             new_line.pop_back();
-            // Add this "line" to the text vector
+            // Add this "new_line" to the text vector
             text.push_back(new_line);
+            // And break the loop
             break;
         }
         // IF you input a newline char (Pressed enter)
@@ -209,7 +234,7 @@ void append()
         {
             // Delete the newline char from end of the new_line string
             new_line.pop_back();
-            // Add this "line" to the text vector
+            // Add this "new_line" to the text vector
             text.push_back(new_line);
             // Empty the new_line string to input another line to it.
             new_line = "";
@@ -220,6 +245,7 @@ void append()
 
 void display()
 {
+    // If the file was empty tell them there's no thing to display
 	if (text.empty())
 	{
 		cout << "There is no content in this file to display.\n";
@@ -227,6 +253,7 @@ void display()
 	else
 	{
 		cout << "______________________________________\n\n";
+        // For every line in the text vector, Print this line
 		for(string line: text)
 		{
 			cout << line << '\n';
@@ -247,18 +274,23 @@ void empty()
     cin.ignore(0);
 
     filename += ".txt";
-
+    // Get the confirmation that the user really want to empty the file
 	cout << "Are you sure that you want to delete content of " << filename << "?\nPress Enter if you agree, Press anything else otherwise\n>>";
 	agree = getchar();
+    // If user pressed Enter or agreed
 	if (agree == '\n')
 	{	
+        // Opens the file in writing mode and truncate (or delete) its previous content.
 		file.open(filename, ios::out | ios::trunc);
+        // Closes the file
 		file.close();
 	}
 } 
 
 void encrypt()
 {
+    // Looping after every character in the vector and increasing its ASCII Code by one 
+    
 	for (int i = 0; i < text.size(); ++i)
 	{
 		for(int j = 0; j < text[i].size(); ++j)
@@ -270,6 +302,7 @@ void encrypt()
 
 void decrypt()
 {
+    // Looping after every character in the vector and decreasing its ASCII Code by one in order to decrypt it
 	for (int i = 0; i < text.size(); ++i)
 	{
 		for(int j = 0; j < text[i].size(); ++j)
@@ -283,7 +316,7 @@ void upper()
 {
     for (int i = 0; i < text.size(); ++i)
     {
-        // Transforming the whole string to uppercase.
+        // Transforming the whole string to uppercase by Getting every character in the string and perform toupper function to it.
         transform(text[i].begin(), text[i].end(), text[i].begin(), ::toupper);
     }
     
@@ -291,9 +324,10 @@ void upper()
 
 void lower()
 {
+    // Looping after every element (line) in the text vector
     for (int i = 0; i < text.size(); ++i)
     {
-        // Transforming the whole string to lowercase.
+        // Transforming the whole string to lowercase by Getting every character in the string and perform tolower function to it.
         transform(text[i].begin(), text[i].end(), text[i].begin(), ::tolower);
     }
     
@@ -301,9 +335,20 @@ void lower()
 
 void capitalize()
 {
+    // Looping after every element (line) in the text vector
     for (int i = 0; i < text.size(); ++i)
     {
-        text[i][0] = toupper(text[i][0]); 
+        // Taking the first char of every line and uppercase it
+        text[i][0] = toupper(text[i][0]);
+        // Looping over the rest of characters in the line  
+        for (int j = 1; j < text[j].size; ++j)
+        {
+            // If a space was followed by the current character, Capitalize it(turn it to uppercase)
+            if (text[i][j-1] == ' ')
+            {
+                text[i][j] = toupper(text[i][j]);
+            }
+        }
     }
 }
 
