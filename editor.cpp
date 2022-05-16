@@ -1,3 +1,15 @@
+/* 
+Program   : editor.cpp
+Purpose   : Devoloping the act of
+            importing a file andchosing an 
+            option to be done for it 
+            counting , merge , searching , etc
+Author    : Mohammad El-Ramly
+Developers: Ahmed Reda Bayomi       ID: 20210019
+            Youssef Hamed Mohamed   ID: 20210494
+ Date     : 16 MAY 2022
+ Version  : 1.0 
+ */
 #include <iostream>
 #include <fstream>
 #include <cstring>
@@ -354,18 +366,19 @@ void capitalize()
         }
     }
 }
-
+ //searching for any word
 void search()
+
 {
     string search;
     int offset;
     string line;
-
+//geting the word from the user
     ifstream Myfile;
-    Myfile.open(filename);
+    Myfile.open(filename);//open file
     cout << "Type the name you want to search : " << endl;
-    
-    getline(cin, search);
+
+    getline(cin, search); //search for the word
     cin.ignore(0);
     
     if (Myfile.is_open())
@@ -374,24 +387,26 @@ void search()
         {
             getline(Myfile, line);
             if ((offset = line.find(search,0)) != string :: npos)
-            {
+            {/*if the word is found 
+               out put the the word *** has been founded*/
                 cout << "\nThe word "<< search << " has been founded!" << endl;
-                Myfile.close();
+                Myfile.close(); //close file
                 return;
             }  
-        }
+        }/* if the word is not found
+            out put the the word does not exist */
         cout << "\nThis word does not Exist.";
         Myfile.close();
     }    
     else
-    {
+    { //for any other problems
         cout << "\nCould not open file"<<endl;
         return;
     }   
 }
 
 void count()
-{
+{//function for counting
     ifstream in(filename);
     StrIntMap words_map;
     countWords(in, words_map);
@@ -400,7 +415,7 @@ void count()
     {
         cout << it->first << " occured "<< it->second << endl;
     }
-}
+}//pointer for labboling the search with the file
 
 void countWords(istream& in ,StrIntMap& words)
 {
@@ -412,22 +427,25 @@ void countWords(istream& in ,StrIntMap& words)
 }
 
 
-void nWords()
+void nWords()//function for counting words
 {
     ifstream indata;
     char ch;
-    int words = 0;
+    int words = 0;/*incialize the words with zero
+    to be add by each backspace or new line*/
 
-    indata.open(filename);
-    indata.get(ch);
+    indata.open(filename);//open searching file
+    indata.get(ch);//get all char
     while(indata)
     {
-        if (ch == '\n')
+        if (ch == '\n')/*if you are going new line
+        then words will be add by one*/
         {
             words++;
         }
         else if (ch == ' ')
-            words++;
+            words++;/*if you are tabimg backspace
+        then words will be add by one*/
 
         indata.get(ch);
     }
@@ -437,17 +455,18 @@ void nWords()
     return;
 }
 
-void nCharacters()
+void nCharacters()//function for counting characters
 {
     ifstream indata;
     char ch;
-    int chr = 0;
+    int chr = 0;/*incialize the characters with zero
+    to be add by each backspace or new line*/
 
     indata.open(filename);
     indata.get(ch);
     while(indata)
     { 
-        chr++;
+        chr++;//count all char
         indata.get(ch);
     }
 
@@ -455,18 +474,20 @@ void nCharacters()
     return;
 }
 
-void nLines()
+void nLines()//function for counting lines
 {
     ifstream indata;
     char ch;
-    int lines = 0;
+    int lines = 0;/*incialize the lines with zero
+    to be add by each backspace or new line*/
 
     indata.open(filename);
     indata.get(ch);
     while(indata)
     {
         if (ch == '\n')
-        {
+        {/*if you are going new line
+        then words will be add by one*/
           lines++;
         }
         indata.get(ch);
